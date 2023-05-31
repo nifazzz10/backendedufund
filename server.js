@@ -82,8 +82,7 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     // compare the provided password with the stored password
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
+    if (password !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     // if successful, create a session for the user
@@ -93,7 +92,6 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
   
   const stripe = require('stripe')('sk_test_51NDls2SJYorgBX6jvsm08CY6JZcVFMIBKwxftomrD4ySztrSBzm9OE2d8DhT9cP5v0ZiK2OQqnyUAaFnxtZfwZxv00DzqbbjF7'); // replace with your own secret key
