@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const User = require('./models/usermodel');
 const cors = require('cors');
@@ -39,6 +39,24 @@ app.get('/books', async (req, res) => {
   res.json({ books });
 });
 
+// app.post('/register', async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     // check if the email already exists in the database
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser) {
+//       return res.status(400).json({ message: 'Email already exists' });
+//     }
+//     // hash the password
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     // create a new user and store it in the database
+//     const newUser = new User({ email, password: hashedPassword });
+//     await newUser.save();
+//     res.status(201).json({ message: 'User created' });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 app.post('/register', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -47,17 +65,14 @@ app.post('/register', async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: 'Email already exists' });
     }
-    // hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
     // create a new user and store it in the database
-    const newUser = new User({ email, password: hashedPassword });
+    const newUser = new User({ email, password });
     await newUser.save();
     res.status(201).json({ message: 'User created' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
